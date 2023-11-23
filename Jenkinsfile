@@ -5,7 +5,7 @@ pipeline {
         dockerContainerName = 'nodecontainer'
         dockerPortMapping = '8080:3000'
         dockerTag = 'latest'
-        DOCKER_HOME = '/myapp'  
+        DOCKER_HOME = '/home/jenkins'  
     }
     
     stages {
@@ -38,7 +38,7 @@ pipeline {
             steps {
                 script {
                     // Build Docker image
-                    sh 'docker build -t nodeapp:123 .'
+                    sh "docker build --build-arg HOME=${DOCKER_HOME} -t nodeapp:123 ."
                 }
             }
         } 
