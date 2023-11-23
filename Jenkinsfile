@@ -64,6 +64,18 @@ pipeline {
                 }
           }
     }
+
+    stage('Deploy') {
+          steps {
+            script {
+                // Deploy to Kubernetes
+                def kubeNamespace = 'production'
+                def kubeDeploymentFile = 'deploy-production.yaml'
+
+                sh "kubectl apply -f ${kubeDeploymentFile} -n ${kubeNamespace}"
+            }
+          }
+        }
 }
 
     post {
