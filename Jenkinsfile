@@ -41,7 +41,7 @@ pipeline {
             steps {
                 script {
                     // Tag Docker image for consistency
-                    sh "docker tag nodeapp:${dockerTag} abdelrhmanh21/nodejsapp:${dockerTag}"
+                    sh "docker tag nodejsapp:${dockerTag} abdelrhmanh21/nodejsapp:${dockerTag}"
                 }
             }
         } 
@@ -50,7 +50,7 @@ pipeline {
         steps {
                 script {
                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                    sh 'docker push abdelrhmanh21/nodeapp:${dockerTag}'
+                    sh 'docker push abdelrhmanh21/nodejsapp:${dockerTag}'
                 }
           }
     }
