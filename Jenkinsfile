@@ -7,7 +7,7 @@ pipeline {
         dockerTag = 'latest'
         DOCKER_HOME = '/home/jenkins'  
         DOCKERHUB_CREDENTIALS = credentials('docker-hub-credentials')
-        SONARQUBE_SCANNER_HOME = tool 'SonarQube Scanner'
+        SONARQUBE_SCANNER_HOME = tool 'SonarQubeScanner'
     }
     
     stages {
