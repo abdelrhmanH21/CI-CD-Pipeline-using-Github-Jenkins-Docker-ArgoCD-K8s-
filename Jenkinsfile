@@ -5,6 +5,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
+                    sh 'npm i --legacy-peer-deps'
                     sh 'npm install'
                     sh 'npm ci'
                 }
