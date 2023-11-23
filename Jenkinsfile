@@ -6,6 +6,7 @@ pipeline {
         dockerPortMapping = '8080:3000'
         dockerTag = 'latest'
         DOCKER_HOME = '/home/jenkins'  
+        DOCKERHUB_CREDENTIALS = credentials('docker-hub-credentials')
     }
     
     stages {
@@ -48,14 +49,8 @@ pipeline {
     stage('Push to Docker Hub') {
         steps {
                 script {
-                    // Use Docker Hub credentials stored in Jenkins
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-                        // Log in to Docker Hub with --password-stdin
-                        sh "echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin"
-
-                        // Push the Docker image to Docker Hub
-                        sh "docker push abdelrhmanH21/nodejsApp:${dockerTag}"
-                    }
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh 'docker push abdelrhmanh21/nodeapp:${dockerTag}'
                 }
           }
     }
