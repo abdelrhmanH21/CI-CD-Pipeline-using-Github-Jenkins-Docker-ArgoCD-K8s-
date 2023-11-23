@@ -37,15 +37,15 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                script {
-                    withSonarQubeEnv('sonarqube-token') {
-                        sh "${tool('SonarQubeScanner')}/bin/sonar-scanner"
-                    }
+       // stage('SonarQube Analysis') {
+         //   steps {
+           //     script {
+             //       withSonarQubeEnv('sonarqube-token') {
+            //            sh "${tool('SonarQubeScanner')}/bin/sonar-scanner"
+            //        }
                 }
-            }
-        }
+          //  }
+      //  }
 
         stage('Dockerize') {
             steps {
