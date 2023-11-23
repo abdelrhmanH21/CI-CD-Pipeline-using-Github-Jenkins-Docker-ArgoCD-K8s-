@@ -7,6 +7,7 @@ pipeline {
         dockerTag = 'latest'
         DOCKER_HOME = '/home/jenkins'  
         DOCKERHUB_CREDENTIALS = credentials('docker-hub-credentials')
+        SONARQUBE_SCANNER_HOME = tool 'SonarQube Scanner'
     }
     
     stages {
@@ -33,6 +34,16 @@ pipeline {
                 script {
                     // Build Docker image
                     sh "docker build --build-arg HOME=${DOCKER_HOME} -t nodeapp:${dockerTag} ."
+                }
+            }
+        }
+      
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    withSonarQubeEnv('sonarqube-token') {
+                        sh "${tool('SonarQube Scanner')}/bin/sonar-scanner"
+                    }
                 }
             }
         }
