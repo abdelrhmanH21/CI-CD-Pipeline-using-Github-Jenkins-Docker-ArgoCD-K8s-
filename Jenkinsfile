@@ -5,6 +5,7 @@ pipeline {
         dockerContainerName = 'nodecontainer'
         dockerPortMapping = '8080:3000'
         dockerTag = 'latest'
+        DOCKER_HOME = '/home/abdelrhman/nodejs.org'  
     }
     
     stages {
@@ -37,7 +38,7 @@ pipeline {
             steps {
                 script {
                     // Build Docker image
-                    sh "docker build -t ${dockerImage}:${dockerTag} ."
+                    sh "docker build --build-arg HOME=${DOCKER_HOME} -t ${dockerImage}:${dockerTag} ."
                 }
             }
         }
