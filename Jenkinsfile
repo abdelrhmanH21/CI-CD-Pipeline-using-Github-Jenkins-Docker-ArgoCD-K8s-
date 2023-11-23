@@ -43,6 +43,19 @@ pipeline {
             }
         } 
     }
+    stage('Push to Docker Hub') {
+            steps {
+                script {
+                    // Use Docker Hub credentials stored in Jenkins
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                        // Log in to Docker Hub
+                        sh "docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD"
+
+                        // Push the Docker image to Docker Hub
+                        sh 'docker push abdelrhmanH21/nodejsApp:v2'
+                    }
+              }
+        }
 
     post {
         success {
