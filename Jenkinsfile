@@ -5,7 +5,7 @@ pipeline {
         dockerContainerName = 'nodecontainer'
         dockerPortMapping = '8080:3000'
         dockerTag = 'latest'
-        DOCKER_HOME = '/home/abdelrhman/nodejs.org'  
+        DOCKER_HOME = '/myapp'  
     }
     
     stages {
