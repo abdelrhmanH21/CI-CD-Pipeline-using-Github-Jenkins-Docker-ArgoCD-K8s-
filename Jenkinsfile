@@ -40,7 +40,7 @@ pipeline {
             steps {
                 script {
                     // Tag Docker image for consistency
-                    sh "docker tag nodeapp:${dockerTag} abdelrhmanH21/nodejsApp:${dockerTag}"
+                    sh "docker tag nodeapp:${dockerTag} abdelrhmanh21/nodejsApp:${dockerTag}"
                 }
             }
         } 
