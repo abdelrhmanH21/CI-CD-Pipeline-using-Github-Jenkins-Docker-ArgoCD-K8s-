@@ -1,5 +1,11 @@
 pipeline {
     agent any
+    environment {
+        dockerImage = 'nodeapp'
+        dockerContainerName = 'nodecontainer'
+        dockerPortMapping = '8080:3000'
+        dockerTag = 'latest'
+    }
     
     stages {
         stage('Install Dependencies') {
@@ -24,6 +30,22 @@ pipeline {
             steps {
                 script {
                     sh 'npm run build'
+                }
+            }
+        }
+     stage('Dockerize') {
+            steps {
+                script {
+                    // Build Docker image
+                    sh "docker build -t ${dockerImage}:${dockerTag} ."
+                }
+            }
+        }
+      stage('Run Container') {
+            steps {
+                script {
+                    // Run Docker container
+                    sh "docker run -d --name ${dockerContainerName} -p ${dockerPortMapping} ${dockerImage}:${dockerTag}"
                 }
             }
         }
