@@ -5,11 +5,10 @@ pipeline {
         dockerContainerName = 'nodecontainer'
         dockerPortMapping = '8080:3000'
         dockerTag = 'latest'
-        DOCKER_HOME = '/home/jenkins'  
+        DOCKER_HOME = '/home/jenkins'
         DOCKERHUB_CREDENTIALS = credentials('docker-hub-credentials')
-        SONARQUBE_SCANNER_HOME = tool 'SonarQubeScanner'
     }
-    
+
     stages {
         stage('Install Dependencies') {
             steps {
@@ -37,7 +36,7 @@ pipeline {
                 }
             }
         }
-      
+
         stage('SonarQube Analysis') {
             steps {
                 script {
@@ -55,7 +54,7 @@ pipeline {
                     sh "docker tag nodeapp:${dockerTag} abdelrhmanh21/nodeapp:${dockerTag}"
                 }
             }
-        } 
+        }
 
     stage('Push to Docker Hub') {
         steps {
