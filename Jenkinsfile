@@ -31,7 +31,7 @@ pipeline {
             steps {
                 script {
                     // Build Docker image with a tag
-                    sh "docker build --build-arg HOME=${DOCKER_HOME} -t abdelrhmanH21/nodejsApp:${dockerTag} ."
+                    sh "docker build --build-arg HOME=${DOCKER_HOME} -t abdelrhmanh21/nodejsApp:${dockerTag} ."
                 }
             }
         }
