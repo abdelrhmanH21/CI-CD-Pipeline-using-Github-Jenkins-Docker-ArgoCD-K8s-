@@ -43,7 +43,7 @@ pipeline {
              //       withSonarQubeEnv('sonarqube-token') {
             //            sh "${tool('SonarQubeScanner')}/bin/sonar-scanner"
             //        }
-                }
+               // }
           //  }
       //  }
 
