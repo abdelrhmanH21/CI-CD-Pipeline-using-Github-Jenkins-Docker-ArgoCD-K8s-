@@ -22,7 +22,7 @@ pipeline {
         }
 
         stage('Run Tests') {
-            steps {
+          steps {
                 script {
                     sh 'npm run test:unit'
                 }
