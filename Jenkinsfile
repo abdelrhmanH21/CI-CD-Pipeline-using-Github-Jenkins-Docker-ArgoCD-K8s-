@@ -38,18 +38,10 @@ pipeline {
             steps {
                 script {
                     // Build Docker image
-                    sh "docker build --build-arg HOME=${DOCKER_HOME} -t ${dockerImage}:${dockerTag} ."
+                    sh 'docker build -t nodeapp:123 .'
                 }
             }
-        }
-      stage('Run Container') {
-            steps {
-                script {
-                    // Run Docker container
-                    sh "docker run -d --name ${dockerContainerName} -p ${dockerPortMapping} ${dockerImage}:${dockerTag}"
-                }
-            }
-        }
+        } 
     }
 
     post {
