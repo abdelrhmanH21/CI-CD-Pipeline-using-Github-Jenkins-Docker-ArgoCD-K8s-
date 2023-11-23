@@ -1,33 +1,46 @@
 pipeline {
     agent any
-    stages {
-        stage('Install Dependencies') {
-            steps {
-              script {
-                def nodeVersion = '14.17.6' // Replace with your desired Node.js version
-                tool 'NodeJS ' + nodeVersion
-        }
+    environment {
+        NODE_VERSION = '14.17.6' // Replace with your desired Node.js version
     }
-
+    stages {
+        stage('Set Node.js Version') {
+            steps {
+                script {
+                    tool 'NodeJS ' + env.NODE_VERSION
+                }
+            }
         }
+
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
-                sh 'npm ci'
+                script {
+                    sh 'npm install'
+                    sh 'npm ci'
+                }
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'npm run test:unit'
+                script {
+                    sh 'npm run test:unit'
+                }
             }
         }
 
         stage('Build') {
             steps {
-                sh 'npm run build'
+                script {
+                    sh 'npm run build'
+                }
             }
         }
     }
-}
 
+    post {
+        success {
+            archiveArtifacts 'dist/**' // Adjust the path based on your project structure
+        }
+    }
+}
