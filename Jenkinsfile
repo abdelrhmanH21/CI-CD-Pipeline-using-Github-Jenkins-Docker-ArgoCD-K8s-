@@ -1,5 +1,7 @@
 pipeline {
     agent any
+    
+    stages {
         stage('Install Dependencies') {
             steps {
                 script {
@@ -10,7 +12,7 @@ pipeline {
         }
 
         stage('Run Tests') {
-          steps {
+            steps {
                 script {
                     sh 'npm run test:unit'
                 }
@@ -28,7 +30,9 @@ pipeline {
 
     post {
         success {
-            archiveArtifacts 'dist/**' // Adjust the path based on your project structure
+            script {
+                archiveArtifacts 'dist/**' // Adjust the path based on your project structure
+            }
         }
     }
 }
