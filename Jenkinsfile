@@ -1,6 +1,8 @@
 pipeline {
     agent any
     environment {
+        DOCKERHUB_USERNAME = credentials('abdelrhmanH21')
+        DOCKERHUB_PASSWORD = credentials('abdoH2122@@')
         dockerImage = 'nodeapp'
         dockerContainerName = 'nodecontainer'
         dockerPortMapping = '8080:3000'
@@ -47,11 +49,13 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 script {
-                        // Log in to Docker Hub
-                        sh "docker login --username=abdelrhmanH21 --password=abdoH2122@@"
+                        // Log in to Docker Hub securely
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                        sh "echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USERNAME --password-stdin"
+                    }
 
-                        // Push the Docker image to Docker Hub
-                        sh "docker push abdelrhmanH21/nodejsApp:${dockerTag}"
+                    // Push the Docker image to Docker Hub
+                    sh "docker push abdelrhmanh21/nodejsapp:latest"
                 }
             }
         }
