@@ -5,9 +5,9 @@ pipeline {
         dockerContainerName = 'nodecontainer'
         dockerPortMapping = '8080:3000'
         dockerTag = 'latest'
-        DOCKER_HOME = '/home/jenkins'  
+        DOCKER_HOME = '/home/jenkins'
     }
-    
+
     stages {
         stage('Install Dependencies') {
             steps {
@@ -30,20 +30,22 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh 'npm run build'
+                    // Build Docker image with a tag
+                    sh "docker build --build-arg HOME=${DOCKER_HOME} -t abdelrhmanH21/nodejsApp:${dockerTag} ."
                 }
             }
         }
-     stage('Dockerize') {
+
+        stage('Dockerize') {
             steps {
                 script {
-                    // Build Docker image
-                    sh "docker build --build-arg HOME=${DOCKER_HOME} -t nodeapp:123 ."
+                    // Push the Docker image to Docker Hub
+                    sh "docker tag abdelrhmanH21/nodejsApp:${dockerTag} abdelrhmanH21/nodejsApp:${dockerTag}"
                 }
             }
-        } 
-    }
-    stage('Push to Docker Hub') {
+        }
+
+        stage('Push to Docker Hub') {
             steps {
                 script {
                     // Use Docker Hub credentials stored in Jenkins
@@ -52,10 +54,12 @@ pipeline {
                         sh "docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD"
 
                         // Push the Docker image to Docker Hub
-                        sh 'docker push abdelrhmanH21/nodejsApp:v2'
+                        sh "docker push abdelrhmanH21/nodejsApp:${dockerTag}"
                     }
-              }
+                }
+            }
         }
+    }
 
     post {
         success {
