@@ -30,8 +30,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Build Docker image with a tag
-                    sh "docker build --build-arg HOME=${DOCKER_HOME} -t abdelrhmanh21/nodejsApp:${dockerTag} ."
+                    sh 'npm run build'
                 }
             }
         }
@@ -39,8 +38,8 @@ pipeline {
         stage('Dockerize') {
             steps {
                 script {
-                    // Push the Docker image to Docker Hub
-                    sh "docker tag abdelrhmanH21/nodejsApp:${dockerTag} abdelrhmanH21/nodejsApp:${dockerTag}"
+                    // Build Docker image with a tag
+                    sh "docker build --build-arg HOME=${DOCKER_HOME} -t abdelrhmanH21/nodejsApp:${dockerTag} ."
                 }
             }
         }
