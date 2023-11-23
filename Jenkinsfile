@@ -42,7 +42,7 @@ pipeline {
             steps {
                 script {
                     withSonarQubeEnv('sonarqube-token') {
-                        sh "${tool('SonarQube Scanner')}/bin/sonar-scanner"
+                        sh "${tool('SonarQubeScanner')}/bin/sonar-scanner"
                     }
                 }
             }
