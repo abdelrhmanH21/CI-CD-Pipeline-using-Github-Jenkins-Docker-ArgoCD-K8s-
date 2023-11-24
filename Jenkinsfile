@@ -56,25 +56,22 @@ pipeline {
             }
         }
 
-    stage('Push to Docker Hub') {
-        steps {
+    //stage('Push to Docker Hub') {
+        //steps {
+              //  script {
+                //    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                //    sh 'docker push abdelrhmanh21/nodeapp:${dockerTag}'
+             //   }
+       //   }
+   // }
+
+    stage('Deploy to Production') {
+            steps {
                 script {
-                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                    sh 'docker push abdelrhmanh21/nodeapp:${dockerTag}'
+                    // Assuming kubectl is used for Kubernetes deployment
+                    sh 'kubectl apply -f deploy-production.yml'
                 }
-          }
-    }
-
-    stage('Deploy') {
-          steps {
-            script {
-                // Deploy to Kubernetes
-                def kubeNamespace = 'production'
-                def kubeDeploymentFile = 'deploy-production.yaml'
-
-                sh "kubectl apply -f ${kubeDeploymentFile} -n ${kubeNamespace}"
             }
-          }
         }
 }
 
