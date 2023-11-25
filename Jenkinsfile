@@ -7,6 +7,8 @@ pipeline {
         dockerTag = 'latest'
         DOCKER_HOME = '/home/jenkins'
         DOCKERHUB_CREDENTIALS = credentials('docker-hub-credentials')
+        SONAR_SCANNER_HOME = tool 'sonarscanner'
+        NODEJS_HOME = tool 'NodeJS'
     }
 
     stages {
@@ -43,7 +45,7 @@ pipeline {
                     def scannerHome = tool 'sonarscanner'
                     withSonarQubeEnv('sonarserver') {
                         // Run SonarScanner
-                        sh "${scannerHome}/bin/sonar-scanner"
+                        sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner"
                     }
                 }
             }
