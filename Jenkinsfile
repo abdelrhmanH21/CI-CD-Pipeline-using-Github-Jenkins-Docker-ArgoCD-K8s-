@@ -37,15 +37,17 @@ pipeline {
             }
         }
 
-       // stage('SonarQube Analysis') {
-         //   steps {
-           //     script {
-             //       withSonarQubeEnv('sonarqube-token') {
-            //            sh "${tool('SonarQubeScanner')}/bin/sonar-scanner"
-            //        }
-               // }
-          //  }
-      //  }
+       stage('SonarQube Code Analysis') {
+            steps {
+                script {
+                    def scannerHome = tool 'sonarscanner'
+                    withSonarQubeEnv('sonarserver') {
+                        // Run SonarScanner
+                        sh "${scannerHome}/bin/sonar-scanner"
+                    }
+                }
+            }
+        }
 
         stage('Dockerize') {
             steps {
