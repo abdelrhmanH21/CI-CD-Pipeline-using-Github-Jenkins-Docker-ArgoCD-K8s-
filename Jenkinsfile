@@ -8,7 +8,6 @@ pipeline {
         DOCKER_HOME = '/home/jenkins'
         DOCKERHUB_CREDENTIALS = credentials('docker-hub-credentials')
         SONAR_SCANNER_HOME = tool 'sonarscanner'
-        NODEJS_HOME = tool 'NodeJS'
     }
 
     stages {
