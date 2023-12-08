@@ -54,7 +54,7 @@ pipeline {
         stage('Dockerize') {
             steps {
                 script {
-                    // Tag Docker image for consistency
+                    // Tag Docker  image for consistency
                     sh "docker tag nodeapp:${dockerTag} abdelrhmanh21/nodeapp:${dockerTag}"
                 }
             }
