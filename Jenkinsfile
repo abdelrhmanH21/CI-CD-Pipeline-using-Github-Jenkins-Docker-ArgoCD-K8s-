@@ -4,6 +4,8 @@ pipeline {
     environment {
         DOCKER_HOME = '/home/jenkins'
         DOCKERHUB_CREDENTIALS = credentials('docker-hub-credentials')
+        GIT_COMMIT_HASH = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+        DOCKER_TAG = "latest-${GIT_COMMIT_HASH}"
     }
 
     stages {
@@ -28,15 +30,11 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Use the short Git commit hash as the Docker image tag
-                    def gitCommitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-                    def dockerTag = "latest-${gitCommitHash}"
-
                     // Build Docker image with the new tag
-                    sh "docker build --build-arg HOME=${DOCKER_HOME} -t nodeapp:${dockerTag} ."
+                    sh "docker build --build-arg HOME=${DOCKER_HOME} -t nodeapp:${DOCKER_TAG} ."
 
                     // Tag Docker image for consistency
-                    sh "docker tag nodeapp:${dockerTag} abdelrhmanh21/nodeapp:${dockerTag}"
+                    sh "docker tag nodeapp:${DOCKER_TAG} abdelrhmanh21/nodeapp:${DOCKER_TAG}"
                 }
             }
         }
@@ -46,12 +44,14 @@ pipeline {
                 script {
                     // Push the updated Docker image to Docker Hub
                     withCredentials([string(credentialsId: 'DOCKERHUB_CREDENTIALS', variable: 'DOCKERHUB_CREDENTIALS')]) {
-                        sh 'docker login -u abdelrhmanh21 --password-stdin <<< $DOCKERHUB_CREDENTIALS'
-                        sh "docker push abdelrhmanh21/nodeapp:${dockerTag}"
-                      }
+                        sh 'echo $DOCKERHUB_CREDENTIALS | docker login -u abdelrhmanh21 --password-stdin'
+                        sh "docker push abdelrhmanh21/nodeapp:${DOCKER_TAG}"
+                    }
+                }
+            }
         }
     }
- }
+
     post {
         success {
             script {
@@ -59,5 +59,4 @@ pipeline {
             }
         }
     }
-  }
 }
