@@ -27,7 +27,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: nodejs-service
+  name: nodejs-service-dev
   namespace: development
 spec:
   selector:
@@ -36,5 +36,4 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 3000
-      nodePort: 30019
   type: NodePort
