@@ -1,13 +1,9 @@
 pipeline {
     agent any
+
     environment {
-        dockerImage = 'nodeapp'
-        dockerContainerName = 'nodecontainer'
-        dockerPortMapping = '8080:3000'
-        dockerTag = 'latest'
         DOCKER_HOME = '/home/jenkins'
         DOCKERHUB_CREDENTIALS = credentials('docker-hub-credentials')
-        SONAR_SCANNER_HOME = tool 'sonarscanner'
     }
 
     stages {
@@ -32,39 +28,29 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Build Docker image
-                    sh "docker build --build-arg HOME=${DOCKER_HOME} -t nodeapp:${dockerTag} ."
-                }
-            }
-        }
+                    // Use the short Git commit hash as the Docker image tag
+                    def gitCommitHash = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                    def dockerTag = "latest-${gitCommitHash}"
 
-        stage('Dockerize') {
-            steps {
-                script {
-                    // Tag Docker  image for consistency
+                    // Build Docker image with the new tag
+                    sh "docker build --build-arg HOME=${DOCKER_HOME} -t nodeapp:${dockerTag} ."
+
+                    // Tag Docker image for consistency
                     sh "docker tag nodeapp:${dockerTag} abdelrhmanh21/nodeapp:${dockerTag}"
                 }
             }
         }
 
-    //stage('Push to Docker Hub') {
-        //steps {
-              //  script {
-                //    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                //    sh 'docker push abdelrhmanh21/nodeapp:${dockerTag}'
-             //   }
-       //   }
-   // }
-
-    stage('Deploy to Production') {
+        stage('Push to DockerHub') {
             steps {
                 script {
-                    // Assuming kubectl is used for Kubernetes deployment
-                    sh 'kubectl apply -f deploy-production.yml'
+                    // Push the updated Docker image to Docker Hub
+                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                    sh "docker push abdelrhmanh21/nodeapp:${dockerTag}"
                 }
             }
         }
-}
+    }
 
     post {
         success {
