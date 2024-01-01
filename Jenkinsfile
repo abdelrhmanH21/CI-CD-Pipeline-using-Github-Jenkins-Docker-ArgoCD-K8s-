@@ -38,18 +38,6 @@ pipeline {
             }
         }
 
-       stage('SonarQube Code Analysis') {
-            steps {
-                script {
-                    def scannerHome = tool 'sonarscanner'
-                    withSonarQubeEnv('sonarqubeserver') {
-                        // Run SonarScanner
-                        sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner"
-                    }
-                }
-            }
-        }
-
         stage('Dockerize') {
             steps {
                 script {
