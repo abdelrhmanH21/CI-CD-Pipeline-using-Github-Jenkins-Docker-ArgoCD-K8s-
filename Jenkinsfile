@@ -48,11 +48,10 @@ pipeline {
                     withCredentials([string(credentialsId: 'DOCKERHUB_CREDENTIALS', variable: 'DOCKERHUB_CREDENTIALS')]) {
                         sh 'docker login -u abdelrhmanh21 --password-stdin <<< $DOCKERHUB_CREDENTIALS'
                         sh "docker push abdelrhmanh21/nodeapp:${dockerTag}"
-                }
-            }
+                      }
         }
     }
-
+ }
     post {
         success {
             script {
