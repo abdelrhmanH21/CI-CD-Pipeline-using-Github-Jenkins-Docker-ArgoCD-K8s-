@@ -81,7 +81,7 @@ jobs:
           fetch-depth: 1
 
       - name: Restore Build Cache
-        uses: actions/cache/restore@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8
+        uses: actions/cache/restore@13aacd865c20de90d75de3b17ebe84f7a17d57d2
         with:
           path: |
             .turbo/cache
@@ -143,7 +143,7 @@ jobs:
         # This prevents this step from running if "Next.js Build (Static)" got cancelled; Which gets cancelled if
         # the curruent branch comes from Dependabot or the Event is not a Pull Request (i.e. Merge Queue Event)
         if: steps.build_nextjs_static.outcome == 'success'
-        uses: actions/cache/save@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8
+        uses: actions/cache/save@13aacd865c20de90d75de3b17ebe84f7a17d57d2
         with:
           path: |
             .turbo/cache
